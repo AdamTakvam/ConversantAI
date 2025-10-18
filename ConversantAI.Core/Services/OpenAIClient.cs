@@ -39,7 +39,7 @@ public class OpenAIClient
             res.EnsureSuccessStatusCode();
             json = await res.Content.ReadAsStringAsync();
         }
-        catch (HttpIOException e)
+        catch (HttpRequestException e)
         {
             Console.WriteLine("Received error response: " + e.Message);
             return String.Empty;
