@@ -7,7 +7,9 @@ Semantic-LRU conversation memory in C#:
 
 ## Setup
 Get an OpenAI API Key:
+
 https://platform.openai.com/api-keys
+
 Put $10 on your account
 
 ## Run (Linux)
@@ -16,10 +18,11 @@ Put $10 on your account
 export OPENAI_API_KEY="sk-..."
 echo '<that line just above>' >> ~/bashrc 
 dotnet run
+```
 
 ## Run (Windows)
 ```powershell
 <Clone the repo>
 setx OPENAI_API_KEY "sk-..."
 dotnet run
-
+```
