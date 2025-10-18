@@ -1,5 +1,4 @@
 using System.Net.Http.Headers;
-using System.Web;
 using System.Text;
 using System.Text.Json;
 
@@ -10,7 +9,7 @@ public class OpenAIClient
     private readonly HttpClient _http = new();
     private readonly string _apiKey;
 
-    public OpenAIClient(string apiKey) => _apiKey = apiKey;
+    public OpenAIClient(string apiKey) { _apiKey = apiKey; }
 
     public async Task<string> CompleteAsync(string system, string prompt, string jsonState)
     {
@@ -33,18 +32,20 @@ public class OpenAIClient
         };
         req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
 
+        string json;
         try
         {
-          var res = await _http.SendAsync(req);
-          res.EnsureSuccessStatusCode();
-          var json = await res.Content.ReadAsStringAsync();
+            HttpResponseMessage res = await _http.SendAsync(req);
+            res.EnsureSuccessStatusCode();
+            json = await res.Content.ReadAsStringAsync();
         }
-        catch (HttpException e)
+        catch (HttpIOException e)
         {
-          Console.WriteLine("Received error response: " + e.Message);
+            Console.WriteLine("Received error response: " + e.Message);
+            return String.Empty;
         }
 
-        using var doc = JsonDocument.Parse(json);
+        using JsonDocument doc = JsonDocument.Parse(json);
         return doc.RootElement
                   .GetProperty("choices")[0]
                   .GetProperty("message")

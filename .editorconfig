@@ -1,0 +1,7 @@
+# Root configuration for all C# files
+root = true
+
+[*.cs]
+dotnet_style_prefer_expression_bodied_constructors = false:suggestion
+dotnet_style_prefer_expression_bodied_methods = false:suggestion
+dotnet_style_prefer_expression_bodied_properties = false:suggestion
