@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Web;
 using System.Text;
 using System.Text.Json;
 
@@ -32,9 +33,16 @@ public class OpenAIClient
         };
         req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
 
-        var res = await _http.SendAsync(req);
-        res.EnsureSuccessStatusCode();
-        var json = await res.Content.ReadAsStringAsync();
+        try
+        {
+          var res = await _http.SendAsync(req);
+          res.EnsureSuccessStatusCode();
+          var json = await res.Content.ReadAsStringAsync();
+        }
+        catch (HttpException e)
+        {
+          Console.WriteLine("Received error response: " + e.Message);
+        }
 
         using var doc = JsonDocument.Parse(json);
         return doc.RootElement
