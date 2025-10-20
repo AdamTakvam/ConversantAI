@@ -25,7 +25,7 @@ public static class Program
         
         while (true)
         {
-            Console.Write("> ");
+            Console.Write("Prompt> ");
             var prompt = ReadLine.Read();
             if (string.IsNullOrWhiteSpace(prompt) || prompt.Trim().Equals("quit", StringComparison.OrdinalIgnoreCase))
                 break;
@@ -40,8 +40,11 @@ public static class Program
                 prompt: prompt,
                 jsonState: state.GetStateJson(pretty: false)
             );
-
-            Console.WriteLine(response);
+            
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine();
+            Console.WriteLine($"ChatGPT> {response}");
+            Console.ResetColor();
 
             // Update memory from assistant output and persist
             state.ProcessResponse(response);
