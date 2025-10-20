@@ -25,8 +25,7 @@ public static class Program
         
         while (true)
         {
-            Console.Write("Prompt> ");
-            var prompt = ReadLine.Read();
+            var prompt = ReadLine.Read("Prompt>");
             if (string.IsNullOrWhiteSpace(prompt) || prompt.Trim().Equals("quit", StringComparison.OrdinalIgnoreCase))
                 break;
             ReadLine.AddHistory(prompt);
