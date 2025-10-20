@@ -15,7 +15,7 @@ public class OpenAIClient
     {
         var body = new
         {
-            model = "gpt-5",
+            model = "gpt-4o",
             messages = new object[]
             {
                 new { role = "system", content = system },
@@ -32,17 +32,14 @@ public class OpenAIClient
         };
         req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
 
-        string json;
-        try
+        HttpResponseMessage res = await _http.SendAsync(req);
+        string json = await res.Content.ReadAsStringAsync();
+
+        if (!res.IsSuccessStatusCode)
         {
-            HttpResponseMessage res = await _http.SendAsync(req);
-            res.EnsureSuccessStatusCode();
-            json = await res.Content.ReadAsStringAsync();
-        }
-        catch (HttpRequestException e)
-        {
-            Console.WriteLine("Received error response: " + e.Message);
-            return String.Empty;
+            Console.WriteLine($"Error {res.StatusCode}: {res.ReasonPhrase}");
+            Console.WriteLine(body);
+            return string.Empty;
         }
 
         using JsonDocument doc = JsonDocument.Parse(json);

@@ -1,3 +1,5 @@
+using System;
+
 using ConversantAI.Services;
 
 namespace ConversantAI;
@@ -19,14 +21,16 @@ public static class Program
         var state = new StateManager(history, analyser, maxCount: 200, expirationThreshold: 3);
 
         Console.WriteLine("ConversantAI PoC — type 'exit' to quit.\n");
-
+        ReadLine.HistoryEnabled = true;
+        
         while (true)
         {
             Console.Write("> ");
-            var prompt = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(prompt) || prompt.Trim().Equals("exit", StringComparison.OrdinalIgnoreCase))
+            var prompt = ReadLine.Read();
+            if (string.IsNullOrWhiteSpace(prompt) || prompt.Trim().Equals("quit", StringComparison.OrdinalIgnoreCase))
                 break;
-
+            ReadLine.AddHistory(prompt);
+            
             // Update memory from user input
             state.ProcessPrompt(prompt);
 
